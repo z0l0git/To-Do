@@ -124,6 +124,7 @@ input {
   width: 250px;
   margin-left: 10px;
   display: flex;
+
   flex-direction: column;
   gap: 14px;
 }
@@ -167,6 +168,7 @@ input {
   width: 100%;
   margin-bottom: 10px;
 }
+
 .round {
   position: relative;
 }
@@ -207,4 +209,11 @@ input {
 
 .round input[type="checkbox"]:checked + label:after {
   opacity: 1;
+}
+
+.styles {
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+  border-radius: 50%;
 }

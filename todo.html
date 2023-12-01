@@ -19,68 +19,7 @@
             <p>To Do</p>
             <p id="todo_count" class="count">0</p>
           </div>
-          <div id="targetTodo">
-            <div id="demcon" class="innerCard" draggable="true">
-              <div class="check">
-                <i
-                  class="fa-regular fa-circle-check fa-xl"
-                  style="color: #000000"
-                ></i>
-              </div>
-              <div class="cardContent">
-                <h2 class="cardTitle">To Do</h2>
-                <p class="cardDesc">
-                  This is Description this is very long 3 Lorem ipsum dolor, sit
-                  amet consectetur adipisicing elit. Nam sed consequatur
-                  deleniti deserunt ut non veritatis consequuntur at in
-                  similique expedita, illum vel id iure! Unde provident quae
-                  consequatur sit!
-                </p>
-                <p class="cardPrior">High</p>
-              </div>
-              <div class="icons">
-                <div class="delete icon">
-                  <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
-                </div>
-                <div class="edit icon">
-                  <i
-                    class="fa-regular fa-pen-to-square fa-sm"
-                    style="color: #000000"
-                  ></i>
-                </div>
-              </div>
-            </div>
-            <div id="demcon1" class="innerCard" draggable="true">
-              <div class="check">
-                <i
-                  class="fa-regular fa-circle-check fa-xl"
-                  style="color: #000000"
-                ></i>
-              </div>
-              <div class="cardContent">
-                <h2 class="cardTitle">To Do</h2>
-                <p class="cardDesc">
-                  This is Description this is very long 3 Lorem ipsum dolor, sit
-                  amet consectetur adipisicing elit. Nam sed consequatur
-                  deleniti deserunt ut non veritatis consequuntur at in
-                  similique expedita, illum vel id iure! Unde provident quae
-                  consequatur sit!
-                </p>
-                <p class="cardPrior">High</p>
-              </div>
-              <div class="icons">
-                <div class="delete icon">
-                  <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
-                </div>
-                <div class="edit icon">
-                  <i
-                    class="fa-regular fa-pen-to-square fa-sm"
-                    style="color: #000000"
-                  ></i>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div id="targetTodo"></div>
           <div class="addbtn">
             <button id="addbtnTodo" class="btn">+ Add Card</button>
           </div>
@@ -131,18 +70,18 @@
         <div>
           <h2>Status</h2>
           <select name="" id="status" class="select">
-            <option value="1">To Do</option>
-            <option value="2">In Progress</option>
-            <option value="3">Stuck</option>
-            <option value="4">Done</option>
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Stuck">Stuck</option>
+            <option value="Done">Done</option>
           </select>
         </div>
         <div>
           <h2>Priority</h2>
           <select name="" id="prior" class="select">
-            <option value="p1">Low</option>
-            <option value="p2">Mid</option>
-            <option value="p3">High</option>
+            <option value="Low">Low</option>
+            <option value="Mid">Mid</option>
+            <option value="High">High</option>
           </select>
         </div>
         <button id="addCard" class="longbtn">Add Task</button>
