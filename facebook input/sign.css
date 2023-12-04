@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  height: 100vh;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.name_input {
+  display: flex;
+  gap: 10px;
+}
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+.birthSelect {
+  display: flex;
+}
+.gender {
+  display: flex;
+  gap: 20px;
+}
+.flex {
+  gap: 5px;
+  display: flex;
+}
+.button {
+  background-color: green;
+  color: white;
+  width: 50%;
+  height: 40px;
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}

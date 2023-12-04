@@ -1,3 +1,5 @@
+// Grab Elemets from HTM++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 const todo = document.getElementById("todo");
 const inprog = document.getElementById("inprog");
 const stuck = document.getElementById("stuck");
@@ -24,9 +26,14 @@ const addInput = document.getElementById("input");
 
 const addCard = document.getElementById("addCard");
 
+// Declare Array and Object to put items in++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 let states = [];
 
-states = JSON.parse(localStorage.getItem("ITEM"));
+states =
+  localStorage.getItem("ITEM") === null
+    ? []
+    : JSON.parse(localStorage.getItem("ITEM"));
 const inputObj = {};
 
 // const drag = document.querySelectorAll(".innerCard");
@@ -35,6 +42,8 @@ const inputObj = {};
 //     event.dataTransfer.setData("box", event.target.id);
 //   });
 // });
+
+// Prevent default of target divs++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 inprog.addEventListener("dragover", (event) => {
   event.preventDefault();
@@ -51,24 +60,30 @@ done.addEventListener("dragover", (event) => {
   event.preventDefault();
 });
 
+// Saving Data of Draggable DIv++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 const drag = document.querySelectorAll(".innerCard");
 
-drag.forEach((el) => {
-  el.addEventListener("dragstart", (event) => {
-    event.dataTransfer.setData("box", event.target.id);
-  });
-});
+// drag.forEach((el) => {
+//   el.addEventListener("dragstart", (event) => {
+//     event.dataTransfer.setData("box", event.target.id);
+//     console.log(event);
+//   });
+// });
+
+// Adding drop events for target divs++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 todo.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
+
   targetTodo.appendChild(dragItem);
 });
 
 inprog.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
-  // console.log(dragId);
+
   targetProg.appendChild(dragItem);
 });
 
@@ -84,99 +99,44 @@ done.addEventListener("drop", (event) => {
   targetDone.appendChild(dragItem);
 });
 
+// + Add Card button Events++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 addbtntodo.addEventListener("click", () => {
   addInput.style.display = "flex";
   Cstatus.value = "To Do";
-  console.log(Cstatus.value);
 });
 addbtnProg.addEventListener("click", () => {
   addInput.style.display = "flex";
   Cstatus.value = "In Progress";
-  console.log(Cstatus.value);
 });
 addbtnStuck.addEventListener("click", () => {
   addInput.style.display = "flex";
   Cstatus.value = "Stuck";
-  console.log(Cstatus.value);
 });
 addbtnDone.addEventListener("click", () => {
   addInput.style.display = "flex";
   Cstatus.value = "Done";
-  console.log(Cstatus.value);
 });
 
+// Add input popup modal ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 window.onclick = function (event) {
   if (event.target == addInput) {
     addInput.style.display = "none";
   }
 };
 
+// adding items to object and array++++++++++++++++++++++++++++++++++++++++++++++++++++++
+let count = 0;
 function addNewInnerCard(parentDiv) {
-  // count++;
-  // const demcon = document.createElement("div");
-  // demcon.draggable = true;
-  // demcon.id = `demcon${count}`;
-  // demcon.classList.add("innerCard");
-  // demcon.setAttribute("class", "innerCard");
-  // const check = document.createElement("div");
-  // demcon.appendChild(check);
-
-  // const roundCheck = document.createElement("i");
-  // roundCheck.setAttribute("class", "fa-regular fa-circle-check fa-xl");
-  // roundCheck.style.color = "black";
-  // check.appendChild(roundCheck);
-
-  // const cardContent = document.createElement("div");
-  // cardContent.classList.add("cardContent");
-  // demcon.appendChild(cardContent);
-  // const cardTitle = document.createElement("h2");
-  // cardTitle.classList.add("cardTitle");
-  // cardTitle.innerHTML = titleInput.value;
-
-  // const cardDesc = document.createElement("p");
-  // cardDesc.classList.add("cardDesc");
-  // cardDesc.innerHTML = descInput.value;
-  // const cardPrior = document.createElement("p");
-  // cardPrior.classList.add("cardPrior");
-  // cardPrior.innerHTML = "Mid";
-  // cardContent.appendChild(cardTitle);
-  // cardContent.appendChild(cardDesc);
-  // cardContent.appendChild(cardPrior);
-
-  // const icons = document.createElement("div");
-  // icons.classList.add("icons");
-  // demcon.appendChild(icons);
-  // const deleted = document.createElement("div");
-
-  // deleted.setAttribute("class", "delete icon");
-  // deleted.setAttribute("onclick", "deleteCon()");
-  // icons.appendChild(deleted);
-
-  // const deleteicon = document.createElement("i");
-  // deleteicon.setAttribute("class", "fa-solid fa-x fa-2xs");
-  // deleteicon.setAttribute("onclick", "deleteCon()");
-  // deleteicon.style.color = "black";
-  // deleted.appendChild(deleteicon);
-
-  // const edit = document.createElement("div");
-  // edit.setAttribute("class", "edit icon");
-  // const editicon = document.createElement("i");
-  // editicon.setAttribute("class", "fa-regular fa-pen-to-square fa-sm");
-  // editicon.style.color = "black";
-  // edit.appendChild(editicon);
-  // icons.appendChild(edit);
-
-  // parentDiv.appendChild(demcon);
-
   inputObj.status = Cstatus.value;
   inputObj.priority = prior.value;
+  inputObj.id = count++;
+  count = inputObj.id;
   states.push({ ...inputObj });
-  console.log(inputObj);
-  console.log(states);
-
   localStorage.setItem("ITEM", JSON.stringify(states));
-
   addInput.style.display = "none";
+
+  localStorage.setItem("count", count);
 }
 
 titleInput.addEventListener("change", (event) => {
@@ -185,6 +145,8 @@ titleInput.addEventListener("change", (event) => {
 descInput.addEventListener("change", (event) => {
   inputObj.desc = descInput.value;
 });
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 addCard.addEventListener("click", () => {
   if (Cstatus.value === "To Do") {
@@ -198,31 +160,18 @@ addCard.addEventListener("click", () => {
   }
 });
 
-function deleteCon() {
-  const deletecon = document.querySelectorAll(".delete");
-  console.log("hello");
-  deletecon.forEach((el) => {
-    el.addEventListener("click", () => {
-      console.log(el.parentElement.parentElement);
-      el.parentElement.parentElement.style.display = "none";
-    });
-  });
-}
-
-let count = 0;
 let style = "";
 
 const card = (props) => {
-  count++;
   let color = "regular";
-  const { title, desc, status, priority } = props;
+  const { title, desc, status, priority, id } = props;
   if (status === "Done") {
     color = "solid";
   }
 
-  return `<div id="demcon${count}" class="innerCard" draggable="true">
+  return `<div id="demcon${id}" class="innerCard" draggable="true">
   <div class="check">
-    <h1 class="${style}">✓</h1>
+    <h1 class="${style}" style="font-family: 'Courier New', Courier, monospace;">✓</h1>
   </div>
   <div class="cardContent">
     <h2 class="cardTitle">${title}</h2>
@@ -232,7 +181,8 @@ const card = (props) => {
     <p class="cardPrior">${priority}</p>
   </div>
   <div class="icons">
-    <div class="delete icon" id="deletecon">
+    <div class="delete icon" id="deletecon" onclick=deleteIcon()
+    >
       <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
     </div>
     <div class="edit icon">
@@ -250,27 +200,44 @@ addCard.addEventListener("click", () => {
 });
 
 const render = () => {
-  if (states[states.length - 1]["status"] === "To Do") {
-    targetTodo.innerHTML += card(states[states.length - 1]);
-  } else if (states[states.length - 1]["status"] === "In Progress") {
-    targetProg.innerHTML += card(states[states.length - 1]);
-  } else if (states[states.length - 1]["status"] === "Stuck") {
-    targetStuck.innerHTML += card(states[states.length - 1]);
-  } else if (states[states.length - 1]["status"] === "Done") {
-    style = "styles";
-    targetDone.innerHTML += card(states[states.length - 1]);
-  }
+  let todo = "";
+  let inprog = "";
+  let stuckv = "";
+  let donev = "";
+  states.forEach((el) => {
+    if (el["status"] === "To Do") {
+      todo += card(el);
+    } else if (el["status"] === "In Progress") {
+      inprog += card(el);
+    } else if (el["status"] === "Stuck") {
+      stuckv += card(el);
+    } else if (el["status"] === "Done") {
+      style = "styles";
+      donev += card(el);
+    }
+  });
+  targetTodo.innerHTML = todo;
+  targetProg.innerHTML = inprog;
+  targetStuck.innerHTML = stuckv;
+  targetDone.innerHTML = donev;
+
   const drag = document.querySelectorAll(".innerCard");
 
   drag.forEach((el) => {
     el.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData("box", event.target.id);
+      console.log(el.id);
     });
   });
 
   style = "";
-  console.log(style, "aa");
 };
 
+function deleteIcon(id) {
+  states.filter((item) => {
+    return item.id !== id;
+  });
+  render();
+}
+
 render();
-console.log(states);

@@ -140,7 +140,16 @@ input {
   padding: 5px;
 }
 .check {
-  margin-top: 5px;
+  border: 1px solid black;
+  border-radius: 48%;
+  width: 25px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  /* background-color: black;
+  color: white; */
 }
 .checkBox {
   border-radius: 50%;

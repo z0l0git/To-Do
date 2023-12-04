@@ -80,3 +80,16 @@ function dragEnd() {
     document.getElementById("turns").innerText = turns;
   }
 }
+
+
+states.forEach((el, index) => {
+  if (el[index]["status"] === "To Do") {
+    targetTodo.innerHTML += card(el[index]);
+  } else if (el[index]["status"] === "In Progress") {
+    targetProg.innerHTML += card(el[index]);
+  } else if (el[index]["status"] === "Stuck") {
+    targetStuck.innerHTML += card(el[index]);
+  } else if (el[index]["status"] === "Done") {
+    style = "styles";
+    targetDone.innerHTML += card(el[index]);
+  }
