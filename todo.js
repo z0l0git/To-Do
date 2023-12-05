@@ -73,6 +73,10 @@ const drag = document.querySelectorAll(".innerCard");
 
 // Adding drop events for target divs++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+function statusChange(arr) {
+  arr.forEach((el) => {});
+}
+
 todo.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
@@ -90,6 +94,9 @@ inprog.addEventListener("drop", (event) => {
 stuck.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
+
+  // find object from Array, setItem by new key -> status
+
   targetStuck.appendChild(dragItem);
 });
 
@@ -131,7 +138,6 @@ function addNewInnerCard(parentDiv) {
   inputObj.status = Cstatus.value;
   inputObj.priority = prior.value;
   inputObj.id = count++;
-  count = inputObj.id;
   states.push({ ...inputObj });
   localStorage.setItem("ITEM", JSON.stringify(states));
   addInput.style.display = "none";
@@ -181,7 +187,7 @@ const card = (props) => {
     <p class="cardPrior">${priority}</p>
   </div>
   <div class="icons">
-    <div class="delete icon" id="deletecon" onclick=deleteIcon()
+    <div class="delete icon" id="deletecon" onclick=deleteIcon(${id})
     >
       <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
     </div>
@@ -239,5 +245,11 @@ function deleteIcon(id) {
   });
   render();
 }
+
+// deletecon.forEach((el) => {
+//   el.addEventListener("click", () => {
+//     deleteIcon(el.id);
+//   });
+// });
 
 render();
