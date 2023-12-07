@@ -148,6 +148,7 @@ input {
   align-items: center;
   justify-content: center;
   font-size: 10px;
+  background-size: cover;
   /* background-color: black;
   color: white; */
 }
@@ -224,5 +225,10 @@ input {
   background-color: black;
   color: white;
   border: 1px solid black;
-  border-radius: 50%;
+  border-radius: 48%;
+  width: 21.5px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

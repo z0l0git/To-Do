@@ -1,5 +1,3 @@
-// Grab Elemets from HTM++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 const todo = document.getElementById("todo");
 const inprog = document.getElementById("inprog");
 const stuck = document.getElementById("stuck");
@@ -77,36 +75,96 @@ function statusChange(arr) {
   arr.forEach((el) => {});
 }
 
+function deleteIcon(id) {
+  states.filter((id) => {
+    return item.id !== id;
+  });
+  render();
+}
+
 todo.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
-
-  targetTodo.appendChild(dragItem);
+  const result = states.find(({ id }) => id === dragId);
+  result.status = "To Do";
+  const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
+  const newArr = responseFromLS.map((el) => {
+    if (el.id === dragId) {
+      return { ...el, status: "To Do" };
+    }
+    return el;
+  });
+  localStorage.setItem("ITEM", JSON.stringify(newArr));
+  render();
 });
 
 inprog.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
 
-  targetProg.appendChild(dragItem);
+  const result = states.find(({ id }) => id === dragId);
+  const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
+  result.status = "In Progress";
+
+  const newArr = responseFromLS.map((el) => {
+    if (el.id === dragId) {
+      return { ...el, status: "In Progress" };
+    }
+    return el;
+  });
+  localStorage.setItem("ITEM", JSON.stringify(newArr));
+
+  render();
 });
 
 stuck.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
-
-  // find object from Array, setItem by new key -> status
-
-  targetStuck.appendChild(dragItem);
+  const result = states.find(({ id }) => id === dragId);
+  result.status = "Stuck";
+  const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
+  const newArr = responseFromLS.map((el) => {
+    if (el.id === dragId) {
+      return { ...el, status: "Stuck" };
+    }
+    return el;
+  });
+  localStorage.setItem("ITEM", JSON.stringify(newArr));
+  render();
 });
 
 done.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
-  targetDone.appendChild(dragItem);
+  const result = states.find(({ id }) => id === dragId);
+  result.status = "Done";
+  const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
+  const newArr = responseFromLS.map((el) => {
+    if (el.id === dragId) {
+      return { ...el, status: "Done" };
+    }
+    return el;
+  });
+  localStorage.setItem("ITEM", JSON.stringify(newArr));
+  render();
 });
 
 // + Add Card button Events++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function checkStatus(state, task) {
+  if (task) {
+    // check if task is not undefined
+    if (state.id === "todo") {
+      inputObj.status = "To Do";
+    } else if (state.id === "inprog") {
+      inputObj.status = "In Progess";
+    } else if (state.id === "stuck") {
+      inputObj.status = "Stuck";
+    } else if (state.id === "done") {
+      inputObj.status = "Done";
+    }
+  }
+}
 
 addbtntodo.addEventListener("click", () => {
   addInput.style.display = "flex";
@@ -133,16 +191,30 @@ window.onclick = function (event) {
 };
 
 // adding items to object and array++++++++++++++++++++++++++++++++++++++++++++++++++++++
+const uniqId = () => {
+  const uniq = "id" + new Date().getTime();
+  return uniq;
+};
+
 let count = 0;
+localStorage.setItem("count", count);
+let upcount = JSON.parse(localStorage.getItem("count"));
+
+inputObj.title = "";
+inputObj.desc = "";
+inputObj.status = "";
+inputObj.priority = "";
+inputObj.id = "";
+
 function addNewInnerCard(parentDiv) {
+  console.log(upcount++);
+
   inputObj.status = Cstatus.value;
   inputObj.priority = prior.value;
-  inputObj.id = count++;
+  inputObj.id = uniqId();
   states.push({ ...inputObj });
   localStorage.setItem("ITEM", JSON.stringify(states));
   addInput.style.display = "none";
-
-  localStorage.setItem("count", count);
 }
 
 titleInput.addEventListener("change", (event) => {
@@ -171,11 +243,8 @@ let style = "";
 const card = (props) => {
   let color = "regular";
   const { title, desc, status, priority, id } = props;
-  if (status === "Done") {
-    color = "solid";
-  }
 
-  return `<div id="demcon${id}" class="innerCard" draggable="true">
+  return `<div id="${id}" class="innerCard" draggable="true">
   <div class="check">
     <h1 class="${style}" style="font-family: 'Courier New', Courier, monospace;">✓</h1>
   </div>
@@ -187,7 +256,7 @@ const card = (props) => {
     <p class="cardPrior">${priority}</p>
   </div>
   <div class="icons">
-    <div class="delete icon" id="deletecon" onclick=deleteIcon(${id})
+    <div class="delete icon" id="deletecon" onclick=deleteIcon(this.id)
     >
       <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
     </div>
@@ -212,11 +281,14 @@ const render = () => {
   let donev = "";
   states.forEach((el) => {
     if (el["status"] === "To Do") {
+      style = "";
       todo += card(el);
     } else if (el["status"] === "In Progress") {
+      style = "";
       inprog += card(el);
     } else if (el["status"] === "Stuck") {
       stuckv += card(el);
+      style = "";
     } else if (el["status"] === "Done") {
       style = "styles";
       donev += card(el);
@@ -232,19 +304,11 @@ const render = () => {
   drag.forEach((el) => {
     el.addEventListener("dragstart", (event) => {
       event.dataTransfer.setData("box", event.target.id);
-      console.log(el.id);
     });
   });
 
   style = "";
 };
-
-function deleteIcon(id) {
-  states.filter((item) => {
-    return item.id !== id;
-  });
-  render();
-}
 
 // deletecon.forEach((el) => {
 //   el.addEventListener("click", () => {
@@ -253,3 +317,6 @@ function deleteIcon(id) {
 // });
 
 render();
+states.forEach((el) => {
+  console.log(typeof el.id);
+});
