@@ -32,6 +32,7 @@ states =
   localStorage.getItem("ITEM") === null
     ? []
     : JSON.parse(localStorage.getItem("ITEM"));
+
 const inputObj = {};
 
 // const drag = document.querySelectorAll(".innerCard");
@@ -75,13 +76,6 @@ function statusChange(arr) {
   arr.forEach((el) => {});
 }
 
-function deleteIcon(id) {
-  states.filter((id) => {
-    return item.id !== id;
-  });
-  render();
-}
-
 todo.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
   const dragItem = document.getElementById(dragId);
@@ -119,7 +113,6 @@ inprog.addEventListener("drop", (event) => {
 
 stuck.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
-  const dragItem = document.getElementById(dragId);
   const result = states.find(({ id }) => id === dragId);
   result.status = "Stuck";
   const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
@@ -135,7 +128,6 @@ stuck.addEventListener("drop", (event) => {
 
 done.addEventListener("drop", (event) => {
   const dragId = event.dataTransfer.getData("box");
-  const dragItem = document.getElementById(dragId);
   const result = states.find(({ id }) => id === dragId);
   result.status = "Done";
   const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
@@ -196,10 +188,6 @@ const uniqId = () => {
   return uniq;
 };
 
-let count = 0;
-localStorage.setItem("count", count);
-let upcount = JSON.parse(localStorage.getItem("count"));
-
 inputObj.title = "";
 inputObj.desc = "";
 inputObj.status = "";
@@ -207,8 +195,6 @@ inputObj.priority = "";
 inputObj.id = "";
 
 function addNewInnerCard(parentDiv) {
-  console.log(upcount++);
-
   inputObj.status = Cstatus.value;
   inputObj.priority = prior.value;
   inputObj.id = uniqId();
@@ -240,12 +226,22 @@ addCard.addEventListener("click", () => {
 
 let style = "";
 
+function deleteIcon(id) {
+  const newArr = states.filter((item) => {
+    return item.id !== id;
+  });
+
+  states = localStorage.setItem("ITEM", JSON.stringify(newArr))
+    ? localStorage.setItem("ITEM", JSON.stringify(newArr))
+    : [];
+  location.reload();
+}
+
 const card = (props) => {
-  let color = "regular";
   const { title, desc, status, priority, id } = props;
 
   return `<div id="${id}" class="innerCard" draggable="true">
-  <div class="check">
+  <div class="check" onclick="render()">
     <h1 class="${style}" style="font-family: 'Courier New', Courier, monospace;">✓</h1>
   </div>
   <div class="cardContent">
@@ -256,7 +252,7 @@ const card = (props) => {
     <p class="cardPrior">${priority}</p>
   </div>
   <div class="icons">
-    <div class="delete icon" id="deletecon" onclick=deleteIcon(this.id)
+    <div class="delete icon" id="deletecon" onclick="deleteIcon('${id}')" onclick="render()"
     >
       <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
     </div>
@@ -287,8 +283,8 @@ const render = () => {
       style = "";
       inprog += card(el);
     } else if (el["status"] === "Stuck") {
-      stuckv += card(el);
       style = "";
+      stuckv += card(el);
     } else if (el["status"] === "Done") {
       style = "styles";
       donev += card(el);
@@ -308,6 +304,62 @@ const render = () => {
   });
 
   style = "";
+
+  const checkBtn = document.querySelectorAll(".check");
+
+  checkBtn.forEach((el) => {
+    el.addEventListener("click", () => {
+      console.log(el.parentElement.id);
+      let checkid = el.parentElement.id;
+      const result = states.find(({ id }) => id === checkid);
+      result.status = "Done";
+      const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
+      const newArr = responseFromLS.map((el) => {
+        if (el.id === checkid) {
+          return { ...el, status: "Done" };
+        }
+        return el;
+      });
+      localStorage.setItem("ITEM", JSON.stringify(newArr));
+      render.call(this);
+    });
+  });
+  //   const titleInput = document.getElementById("titleInput");
+  // const descInput = document.getElementById("descInput");
+  // const Cstatus = document.getElementById("status");
+  // const prior = document.getElementById("prior");
+
+  const editcon = document.querySelectorAll(".edit");
+  const addTitle = document.getElementsByClassName("addTitle")[0];
+
+  editcon.forEach((el) => {
+    el.addEventListener("click", () => {
+      let editid = el.parentElement.parentElement.id;
+      addInput.style.display = "flex";
+      addTitle.innerHTML = "Edit Task";
+      states.forEach((el) => {
+        if (el.id === editid) {
+          titleInput.value = el.title;
+          descInput.value = el.desc;
+          Cstatus.value = el.status;
+          prior.value = el.priority;
+        }
+        addCard.addEventListener("click", () => {
+          titleInput.value = el.title;
+          descInput.value = el.desc;
+          Cstatus.value = el.status;
+          prior.value = el.priority;
+          el.title = titleInput.value;
+          el.desc = descInput.value;
+          el.status = Cstatus.value;
+          el.prior = prior.value;
+          deleteIcon(editid);
+        });
+      });
+    });
+  });
+
+  findCount();
 };
 
 // deletecon.forEach((el) => {
@@ -316,7 +368,15 @@ const render = () => {
 //   });
 // });
 
+const box = document.querySelectorAll(".card");
+
+const findCount = () => {
+  box.forEach((el) => {
+    const tasks = el.querySelectorAll(".innerCard");
+    const taskCount = el.getElementsByClassName("count")[0];
+    taskCount.innerHTML = tasks.length;
+  });
+};
+
+findCount();
 render();
-states.forEach((el) => {
-  console.log(typeof el.id);
-});
