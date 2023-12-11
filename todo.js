@@ -23,6 +23,7 @@ const deletecon = document.querySelectorAll(".delete");
 const addInput = document.getElementById("input");
 
 const addCard = document.getElementById("addCard");
+const addTitle = document.getElementsByClassName("addTitle")[0];
 
 // Declare Array and Object to put items in++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -159,18 +160,26 @@ function checkStatus(state, task) {
 }
 
 addbtntodo.addEventListener("click", () => {
+  addCard.innerHTML = "Add Task";
+  addTitle.innerHTML = "<b>Add Task</b>";
   addInput.style.display = "flex";
   Cstatus.value = "To Do";
 });
 addbtnProg.addEventListener("click", () => {
+  addCard.innerHTML = "Add Task";
+  addTitle.innerHTML = "<b>Add Task</b>";
   addInput.style.display = "flex";
   Cstatus.value = "In Progress";
 });
 addbtnStuck.addEventListener("click", () => {
+  addCard.innerHTML = "Add Task";
+  addTitle.innerHTML = "<b>Add Task</b>";
   addInput.style.display = "flex";
   Cstatus.value = "Stuck";
 });
 addbtnDone.addEventListener("click", () => {
+  addCard.innerHTML = "Add Task";
+  addTitle.innerHTML = "<b>Add Task</b>";
   addInput.style.display = "flex";
   Cstatus.value = "Done";
 });
@@ -178,6 +187,10 @@ addbtnDone.addEventListener("click", () => {
 // Add input popup modal ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 window.onclick = function (event) {
   if (event.target == addInput) {
+    addCard.innerHTML = "Add Task";
+    addTitle.innerHTML = "<b>Add Task</b>";
+    titleInput.value = "";
+    descInput.value = "";
     addInput.style.display = "none";
   }
 };
@@ -194,7 +207,7 @@ inputObj.status = "";
 inputObj.priority = "";
 inputObj.id = "";
 
-function addNewInnerCard(parentDiv) {
+function addNewInnerCard() {
   inputObj.status = Cstatus.value;
   inputObj.priority = prior.value;
   inputObj.id = uniqId();
@@ -213,14 +226,10 @@ descInput.addEventListener("change", (event) => {
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 addCard.addEventListener("click", () => {
-  if (Cstatus.value === "To Do") {
-    addNewInnerCard(targetTodo);
-  } else if (Cstatus.value === "In Progress") {
-    addNewInnerCard(targetProg);
-  } else if (Cstatus.value === "Stuck") {
-    addNewInnerCard(targetStuck);
-  } else if (Cstatus.value === "Done") {
-    addNewInnerCard(targetDone);
+  if (addCard.innerHTML === "Add Task") {
+    addNewInnerCard();
+  } else if (addCard.innerHTML === "Save Shit") {
+    console.log();
   }
 });
 
@@ -252,7 +261,7 @@ const card = (props) => {
     <p class="cardPrior">${priority}</p>
   </div>
   <div class="icons">
-    <div class="delete icon" id="deletecon" onclick="deleteIcon('${id}')" onclick="render()"
+    <div class="delete icon" id="deletecon" onclick="deleteIcon('${id}')"
     >
       <i class="fa-solid fa-x fa-2xs" style="color: #000000"></i>
     </div>
@@ -336,7 +345,8 @@ const render = () => {
     el.addEventListener("click", () => {
       let editid = el.parentElement.parentElement.id;
       addInput.style.display = "flex";
-      addTitle.innerHTML = "Edit Task";
+      addTitle.innerHTML = "<b>Edit Taks</b>";
+      addCard.innerHTML = "Save Shit";
       states.forEach((el) => {
         if (el.id === editid) {
           titleInput.value = el.title;
@@ -344,17 +354,31 @@ const render = () => {
           Cstatus.value = el.status;
           prior.value = el.priority;
         }
-        addCard.addEventListener("click", () => {
-          titleInput.value = el.title;
-          descInput.value = el.desc;
-          Cstatus.value = el.status;
-          prior.value = el.priority;
-          el.title = titleInput.value;
-          el.desc = descInput.value;
-          el.status = Cstatus.value;
-          el.prior = prior.value;
-          deleteIcon(editid);
-        });
+      });
+      addCard.addEventListener("click", () => {
+        if (addCard.innerHTML === "Add Task") {
+          addNewInnerCard();
+          render.call(this);
+        } else if (addCard.innerHTML === "Save Shit") {
+          const responseFromLS = JSON.parse(localStorage.getItem("ITEM"));
+          const newArr = responseFromLS.map((el) => {
+            if (el.id === editid) {
+              return {
+                ...el,
+                status: Cstatus.value,
+                title: titleInput.value,
+                desc: descInput.value,
+                priority: prior.value,
+              };
+            }
+            return el;
+          });
+          localStorage.setItem("ITEM", JSON.stringify(newArr));
+        }
+
+        render.call(this);
+        location.reload();
+        addInput.style.display = "none";
       });
     });
   });
