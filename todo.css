@@ -75,7 +75,7 @@ input {
   color: white;
 }
 .container {
-  margin-top: 150px;
+  margin-top: 20px;
   display: flex;
   /* display: none; */
   width: 1400px;
@@ -232,3 +232,74 @@ input {
   align-items: center;
   justify-content: center;
 }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#clock {
+  width: 100%;
+  text-align: center;
+  font-size: 100px;
+  margin-top: 20px;
+}
+
+.clock {
+  height: 100px;
+  color: white;
+  font-size: 100px;
+  font-family: sans-serif;
+  line-height: 100px;
+  display: flex;
+  position: relative;
+  /*background: green;*/
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+}
+
+/* .clock::before,
+.clock::after {
+  content: "";
+  width: 7ch;
+  height: 3vh;
+  /* width: 100px;
+  width: 50px; */
+
+/* position: absolute;
+  z-index: 2;
+} */
+*/ .clock::after {
+  bottom: 0;
+}
+
+.clock > div {
+  display: flex;
+}
+
+.tick {
+  line-height: 17vh;
+}
+
+.tick-hidden {
+  opacity: 0;
+}
+/* 
+.move {
+  animation: move linear 1s infinite;
+}
+
+@keyframes move {
+  from {
+    transform: translateY(0vh);
+  }
+  to {
+    transform: translateY(-5vh);
+  }
+} */
