@@ -36,13 +36,6 @@ states =
 
 const inputObj = {};
 
-// const drag = document.querySelectorAll(".innerCard");
-// drag.forEach((el) => {
-//   el.addEventListener("dragstart", (event) => {
-//     event.dataTransfer.setData("box", event.target.id);
-//   });
-// });
-
 // Prevent default of target divs++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 inprog.addEventListener("dragover", (event) => {
@@ -63,13 +56,6 @@ done.addEventListener("dragover", (event) => {
 // Saving Data of Draggable DIv++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 const drag = document.querySelectorAll(".innerCard");
-
-// drag.forEach((el) => {
-//   el.addEventListener("dragstart", (event) => {
-//     event.dataTransfer.setData("box", event.target.id);
-//     console.log(event);
-//   });
-// });
 
 // Adding drop events for target divs++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -333,10 +319,6 @@ const render = () => {
       render.call(this);
     });
   });
-  //   const titleInput = document.getElementById("titleInput");
-  // const descInput = document.getElementById("descInput");
-  // const Cstatus = document.getElementById("status");
-  // const prior = document.getElementById("prior");
 
   const editcon = document.querySelectorAll(".edit");
   const addTitle = document.getElementsByClassName("addTitle")[0];
@@ -385,12 +367,6 @@ const render = () => {
 
   findCount();
 };
-
-// deletecon.forEach((el) => {
-//   el.addEventListener("click", () => {
-//     deleteIcon(el.id);
-//   });
-// });
 
 const box = document.querySelectorAll(".card");
 
