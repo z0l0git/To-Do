@@ -1,0 +1,26 @@
+#board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.cell {
+  color: red;
+  width: 100px;
+  height: 100px;
+  border: 2px solid black;
+  text-align: center;
+  line-height: 100px;
+  font-size: 50px;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background-color: #eee;
+}
+
+#message {
+  text-align: center;
+  margin-top: 20px;
+}
